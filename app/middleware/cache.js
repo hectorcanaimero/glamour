@@ -7,8 +7,8 @@ const defaultOptions = {
         404: '5 minutes',
         500: 0 // 1 minute in milliseconds
     }
-}
+};
 
-const cacheInit = getExpeditiousCache(defaultOptions)
+const cacheInit = getExpeditiousCache(defaultOptions);
 
-module.exports = { cacheInit }
+module.exports = { cacheInit };

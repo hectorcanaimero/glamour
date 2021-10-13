@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const StoreScheme = new mongoose.Schema({
   "codLoja": {
@@ -25,9 +25,6 @@ const StoreScheme = new mongoose.Schema({
   "line": {
     "type": Number
   },
-  "product": {
-    "type": String
-  },
   "host": {
     "type": Number
   },
@@ -39,7 +36,9 @@ const StoreScheme = new mongoose.Schema({
   "product": {
     "type": mongoose.Schema.Types.ObjectId,
     "ref": 'products',
-    "autopopulate": true
+    autopopulate:{
+      select: '-mercadologico -lstMercadologicoWeb' // remove listed fields from selection
+    }
   },
   "campanha": {
     "type": mongoose.Schema.Types.ObjectId,
@@ -50,9 +49,9 @@ const StoreScheme = new mongoose.Schema({
 {
   timestamps: true,
   versionKey: false
-})
+});
 
-StoreScheme.plugin(require('mongoose-paginate-v2'))
-StoreScheme.plugin(require('mongoose-autopopulate'))
+StoreScheme.plugin(require('mongoose-paginate-v2'));
+StoreScheme.plugin(require('mongoose-autopopulate'));
 
-module.exports = mongoose.model('stores', StoreScheme)
+module.exports = mongoose.model('stores', StoreScheme);

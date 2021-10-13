@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const CampanhaScheme = new mongoose.Schema({
   "cod_campanha": {
@@ -35,7 +35,7 @@ const CampanhaScheme = new mongoose.Schema({
 {
   timestamps: true,
   versionKey: false
-})
+});
 
-CampanhaScheme.plugin(require('mongoose-paginate-v2'))
-module.exports = mongoose.model('campanhas', CampanhaScheme)
+CampanhaScheme.plugin(require('mongoose-paginate-v2'));
+module.exports = mongoose.model('campanhas', CampanhaScheme);

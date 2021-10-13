@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const ProductScheme = new mongoose.Schema({
   "codProduto": {
@@ -17,13 +17,16 @@ const ProductScheme = new mongoose.Schema({
     "type": String
   },
   "lstEan": {
-    "type": String
+    "type": []
+  },
+  "images": {
+    "type": {}
   },
   "embalagemVenda": {
     "type": []
   },
   "dscInformacaoLegal": {
-    "type": { "type": String, "type": Number, "type": String }
+    "type":  String 
   },
   "status": {
     "type": Number
@@ -35,6 +38,6 @@ const ProductScheme = new mongoose.Schema({
 {
   timestamps: true,
   versionKey: false
-})
+});
 
-module.exports = mongoose.model('products', ProductScheme)
+module.exports = mongoose.model('products', ProductScheme);
