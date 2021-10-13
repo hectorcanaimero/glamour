@@ -6,7 +6,7 @@ const { cacheInit } = require('../middleware/cache');
 const { createUrl, getRedirect, removeItem, updateItem } = require('../controlles/url');
 
 router.get('/', getItems);
-router.get('/:shorty', cacheInit, getRedirect);
+router.get('/:shorty', getRedirect);
 
 router.post('/', createUrl);
 router.put('/:id', updateItem);

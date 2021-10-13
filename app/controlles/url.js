@@ -20,6 +20,7 @@ getItems = async (req, res) => {
 
 getRedirect = async (req, res) => {
   const { shorty } = req.params;
+  console.log(shorty);
   try {
     const item = await urlModel.findOne({ shorty });
     if(item) {

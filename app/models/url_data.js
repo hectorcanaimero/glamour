@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const db = mongoose.createConnection(process.env.DB_URI_ADMIN, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const UrlDataScheme = new mongoose.Schema(
   {
@@ -11,4 +12,4 @@ const UrlDataScheme = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 UrlDataScheme.plugin(require('mongoose-autopopulate'));
-module.exports = mongoose.model('url_data', UrlDataScheme);
+module.exports = db.model('url_data', UrlDataScheme);
