@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const db = mongoose.createConnection(process.env.DB_URI_ADMIN, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const LogsScheme = new mongoose.Schema(
   {
@@ -12,4 +13,4 @@ const LogsScheme = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-module.exports = mongoose.model('logs', LogsScheme);
+module.exports = db.model('logs', LogsScheme);
