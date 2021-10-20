@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const db = mongoose.createConnection(process.env.DB_URI_ADMIN, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const { dbAdmin } = require('../../config/mongo');
 
 const AtacarejoScheme = new mongoose.Schema(
   {
@@ -12,4 +13,4 @@ const AtacarejoScheme = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-module.exports = db.model('atacarejo', AtacarejoScheme);
+module.exports = dbAdmin.model('atacarejo', AtacarejoScheme);

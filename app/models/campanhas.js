@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { db } = require('../../config/mongo');
+
 const CampanhaScheme = new mongoose.Schema({
   "cod_campanha": {
     "type": Number
@@ -38,4 +40,4 @@ const CampanhaScheme = new mongoose.Schema({
 });
 
 CampanhaScheme.plugin(require('mongoose-paginate-v2'));
-module.exports = mongoose.model('campanhas', CampanhaScheme);
+module.exports = db.model('campanhas', CampanhaScheme);

@@ -27,7 +27,7 @@ const getItemByShopHost = async (req, res) => {
   }
 };
 
-getItemWithCampanha = async (req, res) => {
+const getItemWithCampanha = async (req, res) => {
   const { shop } = req.params;
   const  { page, per_page } = req.query;
   options.page = page;
@@ -40,4 +40,38 @@ getItemWithCampanha = async (req, res) => {
   }
 };
 
-module.exports = { getItemsByShop, getItemByShopHost, getItemWithCampanha };
+const getProductsWithDepartament = async (req, res) => {
+  const { shop, departament } = req.params;
+  const  { page, per_page } = req.query;
+  options.page = page || 1;
+  options.limit = per_page || 20;
+  try {
+    const items = await stores.paginate({
+      codLoja: shop, 
+      mercadologicoWeb: { '$elemMatch': { 'departamento.codMercadologico': +departament }}
+    }, options);
+    res.status(200).send(items);
+  } catch (e) { httpError(res, e); }
+}
+
+const getProductsWithDepartamentSector = async (req, res) => {
+  const { shop, departament, sector } = req.params;
+  const  { page, per_page } = req.query;
+  options.page = page || 1;
+  options.limit = per_page || 20;
+  try {
+    const items = await stores.paginate({
+      codLoja: shop,
+      mercadologicoWeb: { '$elemMatch': { 'departamento.codMercadologico': +departament, 'setor.codMercadologico': +sector}}
+    }, options);
+    res.status(200).send(items);
+  } catch (e) { httpError(res, e); }
+}
+
+module.exports = {
+  getItemsByShop,
+  getItemByShopHost,
+  getItemWithCampanha,
+  getProductsWithDepartament,
+  getProductsWithDepartamentSector
+};

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const db = mongoose.createConnection(process.env.DB_URI_ADMIN, { useNewUrlParser: true, useUnifiedTopology: true });
+const { dbAdmin } = require('../../config/mongo');
 
 const UrlScheme = new mongoose.Schema(
   {
@@ -9,5 +9,6 @@ const UrlScheme = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
+// UrlScheme.plugin(require('mongoose-autopopulate'));
 UrlScheme.plugin(require('mongoose-paginate-v2'));
-module.exports = db.model('urls', UrlScheme);
+module.exports = dbAdmin.model('urls', UrlScheme);

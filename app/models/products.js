@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { db } = require('../../config/mongo');
+
 const ProductScheme = new mongoose.Schema({
   "codProduto": {
     "type": Number
@@ -33,6 +35,9 @@ const ProductScheme = new mongoose.Schema({
   },
   "line": {
     "type": Number
+  },
+  "like": {
+    "type": Number
   }
 },
 {
@@ -40,4 +45,4 @@ const ProductScheme = new mongoose.Schema({
   versionKey: false
 });
 
-module.exports = mongoose.model('products', ProductScheme);
+module.exports = db.model('products', ProductScheme);

@@ -29,7 +29,44 @@ const getItemByCode = async (req, res) => {
         httpError(res, e);
     }
 };
+    // "codProduto": 378410
+const updateMasFavoriteProduct = async (req, res) => {
+    const { codProduto } = req.body;
+    const filter = { codProduto };
+    const update = { like: 1 };
+    try {
+        let item = await products.findOne({codProduto, 'like': { '$exists': true, $ne: null }});
+        if (item) {
+            update.like = item.like + 1;
+            await products.findOneAndUpdate(filter, update);
+        } else {
+            await products.findOneAndUpdate(filter, update);
+        }
+        item = await products.findOne({codProduto});
+        return res.status(200).send(item);
+    } catch (e) {
+        httpError(res, e);
+    }
+}
 
+const updateMenosFavoriteProduct = async (req, res) => {
+    const { codProduto } = req.body;
+    const filter = { codProduto };
+    const update = { like: 0 };
+    try {
+        let item = await products.findOne({codProduto, 'like': { '$exists': true, $ne: null }});
+        if (item) {
+            const value = item.like < 1 ? 0 : item.like -1;
+            update.like = value;
+            await products.findOneAndUpdate(filter, update);
+        } else {
+            await products.findOneAndUpdate(filter, update);
+        }
+        item = await products.findOne({codProduto});
+        return res.status(200).send(item);
+    } catch (e) {
+        httpError(res, e);
+    }
+}
 
-
-module.exports = { getItems, getItemById, getItemByCode };
+module.exports = { getItems, getItemById, getItemByCode, updateMasFavoriteProduct, updateMenosFavoriteProduct };

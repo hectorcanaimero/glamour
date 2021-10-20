@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const db = mongoose.createConnection(process.env.DB_URI_ADMIN, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const { db } = require('../../config/mongo');
 
 const LogsScheme = new mongoose.Schema(
   {

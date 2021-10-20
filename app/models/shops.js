@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { db } = require('../../config/mongo');
 
 const ShopScheme = new mongoose.Schema({
   "nome": {
@@ -27,4 +28,4 @@ const ShopScheme = new mongoose.Schema({
 
 ShopScheme.plugin(require('mongoose-paginate-v2'))
 
-module.exports = mongoose.model('shops', ShopScheme)
+module.exports = db.model('shops', ShopScheme)

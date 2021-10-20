@@ -5,7 +5,7 @@ const atacarejo = require('../models/atacarejo');
 
 const getItems = async (req, res) => {
   try {
-    const items = await logs.find({});
+    const items = await atacarejo.find({});
     res.send({ items });
   } catch (e) {
     httpError(res, e);

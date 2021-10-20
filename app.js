@@ -4,9 +4,6 @@ const express = require('express');
 const { join } = require('path');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger.json');
-const { dbConnect } = require('./config/mongo');
-dbConnect();
-
 
 const app = express();
 app.use(cors());

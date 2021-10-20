@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { db } = require('../../config/mongo');
 
 const StoreScheme = new mongoose.Schema({
   "codLoja": {
@@ -54,4 +55,4 @@ const StoreScheme = new mongoose.Schema({
 StoreScheme.plugin(require('mongoose-paginate-v2'));
 StoreScheme.plugin(require('mongoose-autopopulate'));
 
-module.exports = mongoose.model('stores', StoreScheme);
+module.exports = db.model('stores', StoreScheme);

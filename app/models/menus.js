@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
+const { db } = require('../../config/mongo');
 
-const MenuScheme = new mongoose.Schema(
-  {
-    indNivel: { type: Number },
-    codMercadologico: { type: Number },
-    dscMercadologico: { type: String },
-    slug: { type: String },
-    setor: { type: Array, }
-  },
-  { timestamps: true, versionKey: false }
-)
+const MenuScheme = new mongoose.Schema({
+  indNivel: { type: Number },
+  codMercadologico: { type: Number },
+  dscMercadologico: { type: String },
+  slug: { type: String },
+  setor: { type: Array, }
+},
+{ timestamps: true, versionKey: false });
 
-module.exports = mongoose.model('menus', MenuScheme)
+module.exports = db.model('menus', MenuScheme)

@@ -2,6 +2,7 @@ const { generate } = require('short-uuid');
 const moment = require('moment');
 
 const urlModel = require('../models/url');
+const urlData = require('../models/url_data');
 const { httpError } = require('../helpers/handleError');
 
 const options = { page: 1, limit: 20, collation: { locale:  'pt'} };
@@ -18,9 +19,24 @@ getItems = async (req, res) => {
   }
 };
 
-getRedirect = async (req, res) => {
+getItem = async(req, res) => {
   const { shorty } = req.params;
   console.log(shorty);
+  try {
+    const item = await urlModel.findOne({ shorty });
+    if(!item) {
+      res.status(409);
+      res.send({ error: 'URL Não existe' });
+    }
+    res.status(200);
+    res.send(item);
+  } catch (e) {
+    httpError(res, e);
+  }
+}
+
+getRedirect = async (req, res) => {
+  const { shorty } = req.params;
   try {
     const item = await urlModel.findOne({ shorty });
     if(item) {
@@ -97,4 +113,4 @@ updateItem = async (req, res) => {
   }
 };
 
-module.exports = { createUrl, getRedirect, getItems, removeItem, updateItem };
+module.exports = { createUrl, getRedirect, getItems, removeItem, updateItem, getItem };
