@@ -5,6 +5,6 @@ const { getItems, createItem } = require('../controlles/favorites');
 
 //TODO: Login !
 router.post('/', createItem);
-router.get('/', getItems);
+router.get('/:idCliente', getItems);
 
 module.exports = router;

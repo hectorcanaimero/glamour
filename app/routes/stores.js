@@ -8,7 +8,7 @@ const { getItemsByShop, getItemByShopHost, getItemWithCampanha, getProductsWithD
 router.get('/:shop', getItemsByShop);
 router.get('/:shop/host/:host', cacheInit, getItemByShopHost);
 router.get('/:shop/campanhas', cacheInit, getItemWithCampanha);
-router.get('/:shop/products/departament/:departament', cacheInit, getProductsWithDepartament);
-router.get('/:shop/products/departament/:departament/sector/:sector', cacheInit, getProductsWithDepartamentSector);
+router.get('/:shop/products/departament/:departament/:slug', cacheInit, getProductsWithDepartament);
+router.get('/:shop/products/departament/:departament/sector/:sector/:slug', cacheInit, getProductsWithDepartamentSector);
 
 module.exports = router;

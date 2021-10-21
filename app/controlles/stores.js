@@ -41,7 +41,7 @@ const getItemWithCampanha = async (req, res) => {
 };
 
 const getProductsWithDepartament = async (req, res) => {
-  const { shop, departament } = req.params;
+  const { shop, departament, slug } = req.params;
   const  { page, per_page } = req.query;
   options.page = page || 1;
   options.limit = per_page || 20;
@@ -55,7 +55,7 @@ const getProductsWithDepartament = async (req, res) => {
 }
 
 const getProductsWithDepartamentSector = async (req, res) => {
-  const { shop, departament, sector } = req.params;
+  const { shop, departament, sector, slug } = req.params;
   const  { page, per_page } = req.query;
   options.page = page || 1;
   options.limit = per_page || 20;
