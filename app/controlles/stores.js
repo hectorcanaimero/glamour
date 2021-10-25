@@ -1,9 +1,10 @@
 const { httpError } = require('../helpers/handleError');
 const stores = require('../models/stores');
+const products = require('../models/products');
 
 const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 
-const getItemsByShop = async (req, res) => {
+const getItemsStore = async (req, res) => {
   const { shop } = req.params;
   const  { page, per_page } = req.query;
   options.page = page || 1;
@@ -17,11 +18,26 @@ const getItemsByShop = async (req, res) => {
 };
 
 
-const getItemByShopHost = async (req, res) => {
+const getItemHost = async (req, res) => {
   const { shop, host } = req.params;
   try {
     const items = await stores.findOne({ codLoja: shop, host });
     res.status(200).send({ items });
+  } catch (e) {
+    httpError(res, e);
+  }
+};
+
+const getItemEAN = async (req, res) => {
+  const { shop, ean } = req.params;
+  try {
+    const items = await products.findOne( { lstEan: { $in: Number(ean) }} );
+    if (items) {
+      const item = await stores.findOne({ codLoja: shop, host: items.codProduto });
+      res.status(200).send({ item });
+    } else {
+      res.status(403).send({ message: 'No se consiguio' });
+    }
   } catch (e) {
     httpError(res, e);
   }
@@ -48,11 +64,11 @@ const getProductsWithDepartament = async (req, res) => {
   try {
     const items = await stores.paginate({
       codLoja: shop, 
-      mercadologicoWeb: { '$elemMatch': { 'departamento.codMercadologico': +departament }}
+      mercadologicoWeb: { $elemMatch: { 'departamento.codMercadologico': +departament }}
     }, options);
     res.status(200).send(items);
   } catch (e) { httpError(res, e); }
-}
+};
 
 const getProductsWithDepartamentSector = async (req, res) => {
   const { shop, departament, sector, slug } = req.params;
@@ -62,15 +78,16 @@ const getProductsWithDepartamentSector = async (req, res) => {
   try {
     const items = await stores.paginate({
       codLoja: shop,
-      mercadologicoWeb: { '$elemMatch': { 'departamento.codMercadologico': +departament, 'setor.codMercadologico': +sector}}
+      mercadologicoWeb: { $elemMatch: { 'departamento.codMercadologico': +departament, 'setor.codMercadologico': +sector}}
     }, options);
     res.status(200).send(items);
   } catch (e) { httpError(res, e); }
-}
+};
 
 module.exports = {
-  getItemsByShop,
-  getItemByShopHost,
+  getItemEAN,
+  getItemHost,
+  getItemsStore,
   getItemWithCampanha,
   getProductsWithDepartament,
   getProductsWithDepartamentSector

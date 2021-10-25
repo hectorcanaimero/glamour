@@ -37,6 +37,7 @@ const StoreScheme = new mongoose.Schema({
   "product": {
     "type": mongoose.Schema.Types.ObjectId,
     "ref": 'products',
+    // "autopopulate": true
     autopopulate:{
       select: '-mercadologico -lstMercadologicoWeb' // remove listed fields from selection
     }

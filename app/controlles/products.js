@@ -30,43 +30,28 @@ const getItemByCode = async (req, res) => {
     }
 };
     // "codProduto": 378410
-const updateMasFavoriteProduct = async (req, res) => {
-    const { codProduto } = req.body;
-    const filter = { codProduto };
-    const update = { like: 1 };
+const updateFavorite = async (req, res) => {
+    const { host } = req.params;
+    const { like } = req.body;
+    const update = { like };
     try {
-        let item = await products.findOne({codProduto, 'like': { '$exists': true, $ne: null }});
+        let item = await products.findOne({ codProduto: host });
         if (item) {
-            update.like = item.like + 1;
-            await products.findOneAndUpdate(filter, update);
+            const update = await products.update({ codProduto: host }, { like: like });
+            console.log(update)
+            return res.status(200).send( await products.findOne({ codProduto: host }));
         } else {
-            await products.findOneAndUpdate(filter, update);
+            return res.status(407).send({ message: 'Não foi encontrado nenhum rewgistro'});
         }
-        item = await products.findOne({codProduto});
-        return res.status(200).send(item);
     } catch (e) {
         httpError(res, e);
     }
-}
+};
 
-const updateMenosFavoriteProduct = async (req, res) => {
-    const { codProduto } = req.body;
-    const filter = { codProduto };
-    const update = { like: 0 };
-    try {
-        let item = await products.findOne({codProduto, 'like': { '$exists': true, $ne: null }});
-        if (item) {
-            const value = item.like < 1 ? 0 : item.like -1;
-            update.like = value;
-            await products.findOneAndUpdate(filter, update);
-        } else {
-            await products.findOneAndUpdate(filter, update);
-        }
-        item = await products.findOne({codProduto});
-        return res.status(200).send(item);
-    } catch (e) {
-        httpError(res, e);
-    }
-}
+const getProductEan = async (req, res) => {
+    const { ean } = req.params;
+    const item = await products.findOne({ lstEan: { $in: Number(ean) }});
+    return res.status(200).send(item);
+};
 
-module.exports = { getItems, getItemById, getItemByCode, updateMasFavoriteProduct, updateMenosFavoriteProduct };
+module.exports = { getItems, getProductEan, getItemById, getItemByCode, updateFavorite  };
