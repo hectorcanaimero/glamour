@@ -16,6 +16,10 @@ const ProductScheme = new mongoose.Schema(
     "embalagemVenda": { "type": [] },
     "dscDetalheProduto": { "type": String },
     "dscInformacaoLegal": { "type":  String  },
+    "favorites": {
+      "type": mongoose.Schema.Types.ObjectId,
+      "ref": 'favorites', "autopopulate": true
+    }
   },
   { timestamps: true, versionKey: false }
 );

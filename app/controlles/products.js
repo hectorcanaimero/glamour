@@ -33,12 +33,10 @@ const getItemByCode = async (req, res) => {
 const updateFavorite = async (req, res) => {
     const { host } = req.params;
     const { like } = req.body;
-    const update = { like };
     try {
         let item = await products.findOne({ codProduto: host });
         if (item) {
-            const update = await products.update({ codProduto: host }, { like: like });
-            console.log(update)
+            await products.update({ codProduto: host }, { like: like });
             return res.status(200).send( await products.findOne({ codProduto: host }));
         } else {
             return res.status(407).send({ message: 'Não foi encontrado nenhum rewgistro'});

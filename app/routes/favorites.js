@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getItems, createItem } = require('../controlles/favorites');
+const { getFavorite, addFavorite } = require('../controlles/favorites');
 
 //TODO: Login !
-router.post('/', createItem);
-router.get('/:idCliente', getItems);
+router.post('/', addFavorite);
+router.get('/:cpf/store/:store', getFavorite);
 
 module.exports = router;

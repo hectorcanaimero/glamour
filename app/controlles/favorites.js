@@ -1,36 +1,43 @@
 const { httpError } = require('../helpers/handleError');
 const favorites = require('../models/favorites');
+const stores = require('../models/stores');
 
 const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 
-const getItems = async (req, res) => {
-  const { idCliente } = req.params;
-  const  { page, per_page } = req.query;
-  options.page = page || 1;
-  options.limit = per_page || 20;
+const getFavorite = async (req, res) => {
+  let items = [];
+  const { cpf, store } = req.params;
   try {
-    const items = await favorites.paginate({ idCliente }, options);
+    const item = await favorites.findOne({ cpf });
+    const products = await stores.find({ codLoja: Number(store), host: { $in: item.products } });
+    const items = {
+      cpf: item.cpf,
+      products,
+      createdAt: item.createdAt
+    };
     res.status(200).send(items);
   } catch (e) { httpError(res, e); }
 };
 
-async function createItem(req, res) {
+const addFavorite = async (req, res) => {
+  let items = [];
+  const { cpf, product } = req.body;
   try {
-    const { idCliente, product } = req.body;
-    const item = await favorites.findOne({ 'product.codProduto': product.codProduto });
-    if (!item) {
-      const register = await favorites.create({ idCliente, product });
-      res.status(200).send({
-        idCliente: register.idCliente, product: register.product,
-        createdAt: register.createdAt, updateAt: register.updateAt
-      });
-    } else {
-      res.status(409);
-      res.send({ error: `já está cadastrado!`, data: item });
+    if (!product) {
+      res.status(404).send({ message: 'Dweve ter um produto pra favoritar' });
     }
-  }
-  catch (e) { httpError(res, e); }
-}
+    items.push(product);
+    const item = await favorites.findOne({ cpf });
+    if (item) {
+      const arr = item.products;
+      arr.push(product);
+      await favorites.update({ cpf }, { products: arr });
+    } else {
+      await favorites.create({ cpf, products: items });
+    }
+    const fav = await favorites.findOne({ cpf });
+    res.status(200).send(fav);
+  } catch(e) { httpError(res, e); }
+};
 
-
-module.exports = { getItems, createItem };
+module.exports = { getFavorite, addFavorite };
