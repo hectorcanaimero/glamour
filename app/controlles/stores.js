@@ -98,10 +98,14 @@ const getSearch = async (req, res) => {
   options.limit = per_page || 20;
   try {
     const product = await products.find({ $text: {$search: search}});
-    product.forEach(el => hosts.push(el.codProduto));
-    const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, {}, options );
-    console.log(items);
-    res.status(200).send(items);
+    if (product) {
+      product.forEach(el => hosts.push(el.codProduto));
+      const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, {}, options );
+      console.log(items);
+      res.status(200).send(items);
+    } else {
+      res.status(407).send({ message: `Não se encontro nemhum resultado para ${search}` });
+    }
   } catch (e) { httpError(res, e); }
 };
 
