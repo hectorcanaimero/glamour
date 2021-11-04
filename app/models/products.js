@@ -23,5 +23,5 @@ const ProductScheme = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
-
+ProductScheme.index({'dscProduto': 'text'});
 module.exports = db.model('products', ProductScheme);

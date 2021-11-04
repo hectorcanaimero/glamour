@@ -52,7 +52,8 @@ const StoreScheme = new mongoose.Schema({
   versionKey: false
 });
 
+StoreScheme.plugin(require('mongoose-simple-random'));
 StoreScheme.plugin(require('mongoose-paginate-v2'));
 StoreScheme.plugin(require('mongoose-autopopulate'));
-
+StoreScheme.index({'product.dscProduto': 'text'});
 module.exports = db.model('stores', StoreScheme);

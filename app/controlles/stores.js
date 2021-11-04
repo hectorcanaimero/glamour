@@ -4,14 +4,18 @@ const products = require('../models/products');
 
 const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 
+const countStoreLoja = async (loja) => {
+  const count = await stores.count({ codLoja: loja });
+  return count;
+};
+
 const getItemsStore = async (req, res) => {
   const { shop } = req.params;
   const  { page, per_page } = req.query;
   options.page = page || 1;
-  options.limit = per_page || 10;
+  options.limit = per_page || 20;
   try {
-    const items = await stores.paginate({ 'codLoja': shop }, options );
-    res.status(200).send({ data: items});
+    stores.paginate({ 'codLoja': shop }, {}, options);
   } catch (e) {
     httpError(res, e);
   }
@@ -63,7 +67,7 @@ const getProductsWithDepartament = async (req, res) => {
   options.limit = per_page || 20;
   try {
     const items = await stores.paginate({
-      codLoja: shop, 
+      codLoja: shop,
       mercadologicoWeb: { $elemMatch: { 'departamento.codMercadologico': +departament }}
     }, options);
     res.status(200).send(items);
@@ -84,7 +88,25 @@ const getProductsWithDepartamentSector = async (req, res) => {
   } catch (e) { httpError(res, e); }
 };
 
+
+const getSearch = async (req, res) => {
+  let hosts = [];
+  const { shop } = req.params;
+  const { search } = req.body;
+  const  { page, per_page } = req.query;
+  options.page = page || 1;
+  options.limit = per_page || 20;
+  try {
+    const product = await products.find({ $text: {$search: search}});
+    product.forEach(el => hosts.push(el.codProduto));
+    const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, {}, options );
+    console.log(items);
+    res.status(200).send(items);
+  } catch (e) { httpError(res, e); }
+};
+
 module.exports = {
+  getSearch,
   getItemEAN,
   getItemHost,
   getItemsStore,

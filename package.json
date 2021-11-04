@@ -7,13 +7,14 @@
     "start": "pm2 start ecosystem.config.js --env production",
     "stop": "pm2 stop ecosystem.config.js --env production",
     "dev": "nodemon app.js",
-    "clean": "sudo kill -9 `sudo lsof -t -i:6970`",
+    "clean": "kill -9 `sudo lsof -t -i:6970`",
     "swagger": "node swagger.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "abazunts-mongoose-random": "^1.4.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -25,6 +26,7 @@
     "mongoose": "^5.13.12",
     "mongoose-autopopulate": "^0.14.0",
     "mongoose-paginate-v2": "^1.4.2",
+    "mongoose-simple-random": "^0.4.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
