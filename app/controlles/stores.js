@@ -15,7 +15,9 @@ const getItemsStore = async (req, res) => {
   options.page = page || 1;
   options.limit = per_page || 20;
   try {
-    stores.paginate({ 'codLoja': shop }, {}, options);
+    const items = await stores.paginate({ 'codLoja': shop }, {}, options);
+    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    return res.status(200).send({ items });
   } catch (e) {
     httpError(res, e);
   }
@@ -26,25 +28,21 @@ const getItemHost = async (req, res) => {
   const { shop, host } = req.params;
   try {
     const items = await stores.findOne({ codLoja: shop, host });
-    res.status(200).send({ items });
-  } catch (e) {
-    httpError(res, e);
-  }
+    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    return res.status(200).send(items);
+  } catch (e) { httpError(res, e); }
 };
 
 const getItemEAN = async (req, res) => {
   const { shop, ean } = req.params;
   try {
     const items = await products.findOne( { lstEan: { $in: Number(ean) }} );
-    if (items) {
-      const item = await stores.findOne({ codLoja: shop, host: items.codProduto });
-      res.status(200).send({ item });
-    } else {
-      res.status(403).send({ message: 'No se consiguio' });
-    }
-  } catch (e) {
-    httpError(res, e);
-  }
+    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    console.log(items.codProduto);
+    const item = await stores.findOne({ codLoja: shop, host: items.codProduto });
+    if (!item) return res.status(403).send({ message: 'Não tem estoque nessa Loja' }); 
+    return res.status(200).send(item);
+  } catch (e) { httpError(res, e); }
 };
 
 const getItemWithCampanha = async (req, res) => {
@@ -68,9 +66,14 @@ const getProductsWithDepartament = async (req, res) => {
   try {
     const items = await stores.paginate({
       codLoja: shop,
-      mercadologicoWeb: { $elemMatch: { 'departamento.codMercadologico': +departament }}
+      mercadologicoWeb: {
+        $elemMatch: {
+          'departamento.codMercadologico': +departament
+        }
+      }
     }, options);
-    res.status(200).send(items);
+    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    return res.status(200).send(items);
   } catch (e) { httpError(res, e); }
 };
 
@@ -101,10 +104,9 @@ const getSearch = async (req, res) => {
     if (product) {
       product.forEach(el => hosts.push(el.codProduto));
       const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, {}, options );
-      console.log(items);
-      res.status(200).send(items);
+      return res.status(200).send(items);
     } else {
-      res.status(407).send({ message: `Não se encontro nemhum resultado para ${search}` });
+      return res.status(407).send({ message: `Não se encontro nemhum resultado para ${search}` });
     }
   } catch (e) { httpError(res, e); }
 };
