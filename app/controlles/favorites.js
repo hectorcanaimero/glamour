@@ -5,39 +5,68 @@ const stores = require('../models/stores');
 const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 
 const getFavorite = async (req, res) => {
-  let items = [];
   const { cpf, store } = req.params;
   try {
     const item = await favorites.findOne({ cpf });
     const products = await stores.find({ codLoja: Number(store), host: { $in: item.products } });
-    const items = {
-      cpf: item.cpf,
-      products,
-      createdAt: item.createdAt
-    };
+    const items = { cpf: item.cpf, products, createdAt: item.createdAt };
     res.status(200).send(items);
   } catch (e) { httpError(res, e); }
 };
 
 const addFavorite = async (req, res) => {
   let items = [];
-  const { cpf, product } = req.body;
+  const { cpf, store, product } = req.body;
   try {
-    if (!product) {
-      res.status(404).send({ message: 'Dweve ter um produto pra favoritar' });
-    }
+    if (!product && !cpf && !store) return res.status(400).send({ message: 'Falta dados' });
     items.push(product);
     const item = await favorites.findOne({ cpf });
     if (item) {
       const arr = item.products;
       arr.push(product);
-      await favorites.update({ cpf }, { products: arr });
+      const existProduct = await favorites.count({ products: { $in: product } });
+      if (existProduct > 0) return res.status(204).send({ message: 'O Produto já esta favoritado!' });
+      await favorites.updateOne({ cpf }, { products: arr });
     } else {
       await favorites.create({ cpf, products: items });
     }
-    const fav = await favorites.findOne({ cpf });
-    res.status(200).send(fav);
+    const favorite = await favorites.findOne({ cpf });
+    const products = await stores.find({ codLoja: store, host: { $in: favorite.products } });
+    const results = { cpf, products };
+    return res.status(201).send(results);
   } catch(e) { httpError(res, e); }
 };
 
-module.exports = { getFavorite, addFavorite };
+const delFavorite = async (req, res) => {
+  const { cpf } = req.params;
+  const { product, store } = req.body;
+  try {
+    if (!product && !cpf) return res.status(400).send({ message: 'Falta dados' });
+    const item = await favorites.findOne({ cpf });
+    if(!item) return res.status(204).send({ message: 'O CPF não tem produtos favoritos' });
+    const arr = item.products;
+    const index = arr.indexOf(product);
+    if (index > -1) { arr.splice(index, 1); }
+    await favorites.updateOne({ cpf }, { products: arr });
+    const favorite = await favorites.findOne({ cpf });
+    const products = await stores.find({ codLoja: store, host: { $in: favorite.products } });
+    const results = { cpf, products };
+    return res.status(201).send(results);
+  } catch(e) { httpError(res, e); }
+
+};
+
+const allFavorites = async (cpf, store) => {
+  const item = await favorites.findOne({ cpf });
+  if (item) {
+    const products = await stores.find({ codLoja: store, host: { $in: item.products } });
+    return { cpf, products };
+  }
+};
+
+const delProductArray = (arr, product) => {
+  const index = arr.indexOf(product);
+  if (index > -1) return arr.splice(index, 1);
+};
+
+module.exports = { getFavorite, addFavorite, delFavorite };

@@ -4,7 +4,7 @@ const { dbAdmin } = require('../../config/mongo');
 
 const FavoritesSchema = new mongoose.Schema(
   {
-    "cpf": { type: Number },
+    "cpf": { type: String },
     "products": { type: Array },
   },
   { timestamps: true, versionKey: false }
