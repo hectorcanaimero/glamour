@@ -15,9 +15,9 @@ const getItemsStore = async (req, res) => {
   options.page = page || 1;
   options.limit = per_page || 20;
   try {
-    const items = await stores.paginate({ 'codLoja': shop }, {}, options);
-    if (!items) return res.status(403).send({ message: 'Data not Found' });
-    return res.status(200).send({ items });
+    const items = await stores.paginate({ 'codLoja': shop }, options);
+    if (!items) res.status(403).send({ message: 'Data not Found' });
+    res.status(200).send(items);
   } catch (e) {
     httpError(res, e);
   }

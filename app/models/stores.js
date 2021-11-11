@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const paginate = require('mongoose-paginate-v2');
+const autopopulate = require('mongoose-autopopulate');
 const { db } = require('../../config/mongo');
 
 const StoreScheme = new mongoose.Schema({
@@ -52,8 +54,7 @@ const StoreScheme = new mongoose.Schema({
   versionKey: false
 });
 
-StoreScheme.plugin(require('mongoose-simple-random'));
-StoreScheme.plugin(require('mongoose-paginate-v2'));
-StoreScheme.plugin(require('mongoose-autopopulate'));
+StoreScheme.plugin(paginate);
+StoreScheme.plugin(autopopulate);
 StoreScheme.index({'product.dscProduto': 'text'});
 module.exports = db.model('stores', StoreScheme);
