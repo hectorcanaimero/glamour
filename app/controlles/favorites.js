@@ -24,8 +24,11 @@ const addFavorite = async (req, res) => {
     if (item) {
       const arr = item.products;
       arr.push(product);
-      const existProduct = await favorites.count({ products: { $in: product } });
-      if (existProduct > 0) return res.status(204).send({ message: 'O Produto já esta favoritado!' });
+      const existProduct = await favorites.find({ products: { $in: product } });
+      if (existProduct) {
+        console.log(existProduct);
+        return res.status(201).send({ message: `O Produto já está no favorito` });
+      }
       await favorites.updateOne({ cpf }, { products: arr });
     } else {
       await favorites.create({ cpf, products: items });
@@ -54,19 +57,6 @@ const delFavorite = async (req, res) => {
     return res.status(201).send(results);
   } catch(e) { httpError(res, e); }
 
-};
-
-const allFavorites = async (cpf, store) => {
-  const item = await favorites.findOne({ cpf });
-  if (item) {
-    const products = await stores.find({ codLoja: store, host: { $in: item.products } });
-    return { cpf, products };
-  }
-};
-
-const delProductArray = (arr, product) => {
-  const index = arr.indexOf(product);
-  if (index > -1) return arr.splice(index, 1);
 };
 
 module.exports = { getFavorite, addFavorite, delFavorite };
