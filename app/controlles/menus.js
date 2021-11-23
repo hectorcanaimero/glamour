@@ -5,12 +5,11 @@ const getMenus = async (req, res) => {
   try {
     const items = await menus.find({});
     res.status(200).send(items);
-  } 
+  }
   catch (e) { httpError(res, e); }
 };
   const getMenusBySlug = async (req, res) => {
     const { slug } = req.params;
-    console.log(slug);
     try {
       const items = await menus.find({slug});
       if (!items)  return res.status(400).send({ message: 'Data is not Found!' });
@@ -21,7 +20,6 @@ const getMenus = async (req, res) => {
 
 const getMenusByCode = async (req, res) => {
     const { code } = req.params;
-    console.log(code);
     try {
       const items = await menus.find({codMercadologico: code});
       if (!items)  return res.status(400).send({ message: 'Data is not Found!' });

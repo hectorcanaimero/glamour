@@ -38,7 +38,6 @@ const getItemEAN = async (req, res) => {
   try {
     const items = await products.findOne( { lstEan: { $in: Number(ean) }} );
     if (!items) return res.status(403).send({ message: 'Data not Found' });
-    console.log(items.codProduto);
     const item = await stores.findOne({ codLoja: shop, host: items.codProduto });
     if (!item) return res.status(403).send({ message: 'Não tem estoque nessa Loja' }); 
     return res.status(200).send(item);
@@ -103,7 +102,7 @@ const getSearch = async (req, res) => {
     const product = await products.find({ $text: {$search: search}});
     if (product) {
       product.forEach(el => hosts.push(el.codProduto));
-      const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, {}, options );
+      const items = await stores.paginate( { codLoja: shop, host: { $in: hosts }}, options );
       return res.status(200).send(items);
     } else {
       return res.status(407).send({ message: `Não se encontro nemhum resultado para ${search}` });
