@@ -24,9 +24,8 @@ const addFavorite = async (req, res) => {
     if (item) {
       const arr = item.products;
       arr.push(product);
-      const existProduct = await favorites.find({ products: { $in: product } });
-      if (existProduct) {
-        console.log(existProduct);
+      const existProduct = await favorites.find({ products: { $in: product }, cpf });
+      if (existProduct.length > 0) {
         return res.status(201).send({ message: `O Produto já está no favorito` });
       }
       await favorites.updateOne({ cpf }, { products: arr });
