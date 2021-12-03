@@ -1,43 +1,50 @@
-const { httpError } = require('../helpers/handleError');
-const atacarejo = require('../models/atacarejo');
+require('dotenv').config();
+const request = require('request');
+const https = require('https');
 
 
 
-const getItems = async (req, res) => {
-  try {
-    const items = await atacarejo.find({});
-    res.send({ items });
-  } catch (e) {
-    httpError(res, e);
-  }
+const getMaster = async (req, res) => {
+  const { collection } = req.params;
+  const options = { method: "GET", url: `${process.env.API}/dados/${collection}`, "rejectUnauthorized": false };
+  request(options, (error, response, body) => {
+    if (error) return res.status(400).send(error);
+    return res.status(200).json(JSON.parse(body));
+  });
 };
 
-const getItem = async (req, res) => {
-  const { cpfcnpj } = req.params;
-  try {
-    const item = await atacarejo.findOne({ cpfcnpj: cpfcnpj });
-    if (item) { res.status(200).send(item); }
-    else { res.status(409).send({message: 'CPF/CNPJ não cadastrado!.'}); }
-  } catch(e) { httpError(res, e); }
+const getSearch = async (req, res) => {
+  const { cpf, cnpj } = req.headers;
+  const { collection } = req.params;
+  const options= { 
+    "rejectUnauthorized": false, headers: {},
+    method: "GET", url: `${process.env.API}/manutencao/${collection}`,
+  };
+  if (collection === 'buscaPessoaFisica') options.headers = {'cpf': `${cpf}`};
+  if (collection === 'buscaPessoaJuridica') options.headers = {'cnpj': `${cnpj}`};
+  request(options, (error, response, body) => {
+    if (error) return res.status(400).send(error);
+    body = JSON.parse(body);
+    if(body.errors[0].code) return res.status(401).send({message: body.errors[0].message});
+    return res.status(200).json(body);
+  });
 };
 
-const createItem = async (req, res) => {
-  try {
-    const { type, cpfcnpj, data, phone, name } = req.body;
-    const item = await atacarejo.findOne({ cpfcnpj: cpfcnpj });
-    if (!item) {
-      const register = await atacarejo.create({ type, cpfcnpj, data, phone, name });
-      res.status(200).send({
-        name: register.name, phone: register.phone,
-        createdAt: register.createdAt, updateAt: register.updateAt, 
-        type: register.type, data: register.data, cpfcnpj: register.cpfcnpj,
-      });
-    } else {
-      res.status(409);
-      res.send({ error: `O ${ cpfcnpj } j'está cadastrado!`, data: item });
-    }
-  } 
-  catch (e) { httpError(res, e); }
+
+const postPessoa = (req, res) => {
+  const { collection } = req.params;
+  const url = `${process.env.API}/manutencao/${collection}`;
+  const headers = {
+    'codLoja': '603',
+    'accept': 'application/json;charset=UTF-8',
+    'Content-Type': 'application/json;charset=UTF-8',
+  };
+  console.log('43 ', req.body);
+  // const options = { url, headers, method: 'POST' };
+  request.post(url, { form: req.body, headers }, (error, response, body) => {
+    console.log('41 ', body);
+  });
+  res.send(req.body);
 };
 
-module.exports = { getItems, createItem, getItem };
+module.exports = { getMaster, getSearch, postPessoa };

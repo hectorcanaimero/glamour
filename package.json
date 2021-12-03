@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "abazunts-mongoose-random": "^1.4.1",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -30,6 +31,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "request": "^2.88.2",
     "response-time": "^2.3.2",
     "short-uuid": "^4.2.0",
     "slug": "^5.1.0",
