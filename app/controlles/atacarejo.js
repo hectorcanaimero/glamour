@@ -36,10 +36,8 @@ const postPessoa = (req, res) => {
   const url = `${process.env.API}/manutencao/${collection}`;
   const options = {
     'method': 'POST',
-    'url': 'http://homologa.condor.com.br/crm-api/cliente/manutencao/' + collection,
-    'headers': {
-      'Content-Type': 'application/json'
-    },
+    'url': `${process.env.API}/manutencao/${collection}`,
+    'headers': { 'Content-Type': 'application/json' },
     body: JSON.stringify(req.body)
   };
   request(options, function (error, response) {
