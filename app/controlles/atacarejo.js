@@ -34,17 +34,18 @@ const getSearch = async (req, res) => {
 const postPessoa = (req, res) => {
   const { collection } = req.params;
   const url = `${process.env.API}/manutencao/${collection}`;
-  const headers = {
-    'codLoja': '603',
-    'accept': 'application/json;charset=UTF-8',
-    'Content-Type': 'application/json;charset=UTF-8',
+  const options = {
+    'method': 'POST',
+    'url': 'http://homologa.condor.com.br/crm-api/cliente/manutencao/' + collection,
+    'headers': {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req.body)
   };
-  console.log('43 ', req.body);
-  // const options = { url, headers, method: 'POST' };
-  request.post(url, { form: req.body, headers }, (error, response, body) => {
-    console.log('41 ', body);
+  request(options, function (error, response) {
+    if (error) return res.status(400).send(JSON.parse(error));
+    res.send(JSON.parse(response.body));
   });
-  res.send(req.body);
 };
 
 module.exports = { getMaster, getSearch, postPessoa };
