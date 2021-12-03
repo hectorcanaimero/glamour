@@ -41,7 +41,7 @@ const postPessoa = (req, res) => {
     body: JSON.stringify(req.body)
   };
   request(options, function (error, response) {
-    if (error) return res.status(400).send(JSON.parse(error));
+    if (error) return res.send(error);
     res.send(JSON.parse(response.body));
   });
 };
