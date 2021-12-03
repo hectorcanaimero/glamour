@@ -33,11 +33,11 @@ const getSearch = async (req, res) => {
 
 const postPessoa = (req, res) => {
   const { collection } = req.params;
-  const url = `${process.env.API}/manutencao/${collection}`;
   const options = {
     'method': 'POST',
-    'url': `${process.env.API}/manutencao/${collection}`,
+    'rejectUnauthorized': false,
     'headers': { 'Content-Type': 'application/json' },
+    'url': `${process.env.API}/manutencao/${collection}`,
     body: JSON.stringify(req.body)
   };
   request(options, function (error, response) {
