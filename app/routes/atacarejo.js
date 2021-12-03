@@ -8,8 +8,8 @@ const {getMaster, getSearch, postPessoa } = require('../controlles/atacarejo');
 // router.get('/', getItems);
 // router.get('/:cpfcnpj', getItem);
 
-router.get('/master/:collection', getMaster);
-router.get('/search/:collection', getSearch);
-router.post('/add/:collection', postPessoa);
+router.get('/dados/:collection', getMaster);
+router.get('/manutencao/:collection', getSearch);
+router.post('/manutencao/:collection', postPessoa);
 
 module.exports = router;
