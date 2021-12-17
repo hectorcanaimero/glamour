@@ -18,7 +18,7 @@ const addFavorite = async (req, res) => {
   let items = [];
   const { cpf, store, product } = req.body;
   try {
-    if (!product && !cpf && !store) return res.status(400).send({ message: 'Falta dados' });
+    if (!product && !cpf && !store) return res.status(400).send({ message: 'Faltam dados' });
     items.push(product);
     const item = await favorites.findOne({ cpf });
     if (item) {

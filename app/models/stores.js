@@ -56,5 +56,5 @@ const StoreScheme = new mongoose.Schema({
 
 StoreScheme.plugin(paginate);
 StoreScheme.plugin(autopopulate);
-StoreScheme.index({'product.dscProduto': 'text'});
+StoreScheme.index({'product.nomProduto': 'text'});
 module.exports = db.model('stores', StoreScheme);

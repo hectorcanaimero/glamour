@@ -28,7 +28,7 @@ const getItemHost = async (req, res) => {
   const { shop, host } = req.params;
   try {
     const items = await stores.findOne({ codLoja: shop, host });
-    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    if (!items) return res.status(403).send({ message: 'Produto não encontrado' });
     return res.status(200).send(items);
   } catch (e) { httpError(res, e); }
 };
@@ -37,7 +37,7 @@ const getItemEAN = async (req, res) => {
   const { shop, ean } = req.params;
   try {
     const items = await products.findOne( { lstEan: { $in: Number(ean) }} );
-    if (!items) return res.status(403).send({ message: 'Data not Found' });
+    if (!items) return res.status(403).send({ message: 'Produto não encontrado' });
     const item = await stores.findOne({ codLoja: shop, host: items.codProduto });
     if (!item) return res.status(403).send({ message: 'Não tem estoque nessa Loja' }); 
     return res.status(200).send(item);

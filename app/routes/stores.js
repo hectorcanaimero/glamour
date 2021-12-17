@@ -12,6 +12,6 @@ router.get('/:shop/campanhas', cacheInit, getItemWithCampanha);
 router.get('/:shop/products/departament/:departament/:slug', cacheInit, getProductsWithDepartament);
 router.get('/:shop/products/departament/:departament/sector/:sector/:slug', cacheInit, getProductsWithDepartamentSector);
 
-router.post('/:shop/search', cacheInit, getSearch);
+router.post('/:shop/search', getSearch);
 
 module.exports = router;
