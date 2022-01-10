@@ -4,9 +4,10 @@ sendApp = async (req, res) => {
   let transporter, mailOptions;
   const data = req.body;
   mailOptions = {
-    from: 'no-reply',
     to: process.env.MAIL_TO,
-    subject: process.env.MAIL_SUBJECT,
+    from: '"Aplicativo Clube Condor" aplicativo@condor.com.br',
+    cc: ['web@condor.com.br'],
+    subject: 'sac@condor.com.br',
     html: dataMail(data)
   };
   transporter = nodemailer.createTransport({
