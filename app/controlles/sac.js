@@ -25,15 +25,16 @@ sendApp = async (req, res) => {
   transporter.sendMail(mailOptions)
   .then((info) => {
     console.log(info);
-    const message = { message: `Message sent:${info.messageId} from ${process.env.MAIL_FROM}` };
+    const message = {  status: true, message: process.env.MESSAGE_SUCCESS };
     console.log(message);
     transporter.close();
     return res.status(201).json(message);
   })
   .catch((err) => {
     console.log(err);
+    const message = {  status: false, message: process.env.MESSAGE_ERROR };
     transporter.close();
-    return res.status(403).json(err);
+    return res.status(403).json(message);
   });
 };
 
