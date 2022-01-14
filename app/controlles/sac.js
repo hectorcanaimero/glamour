@@ -5,8 +5,8 @@ sendApp = async (req, res) => {
   const data = req.body;
   mailOptions = {
     to: process.env.MAIL_TO,
-    from: '"Aplicativo Clube Condor" aplicativo@condor.com.br',
-    // cc: ['hector.velasques@condor.com.br', 'djalma.dissenha@mgtecsolucoes.com.br'],
+    from: 'Aplicativo Clube Condor',
+    cc: ['hector.velasques@condor.com.br', 'fernando.nunes@condor.com.br'],
     subject: 'sac@condor.com.br',
     html: dataMail(data)
   };
