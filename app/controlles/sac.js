@@ -3,13 +3,13 @@ const nodemailer = require("nodemailer");
 sendApp = async (req, res) => {
   let transporter, mailOptions;
   const data = req.body;
-  console.log(data);
+  console.log(data.sac);
   mailOptions = {
     to: process.env.MAIL_TO,
     from: 'Aplicativo Clube Condor',
     cc: ['hector.velasques@condor.com.br', 'fernando.nunes@condor.com.br'],
     subject: 'sac@condor.com.br',
-    html: dataMail(data)
+    html: dataMail(data.sac)
   };
   transporter = nodemailer.createTransport({
     type: "SMTP",
