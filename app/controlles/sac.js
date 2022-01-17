@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 sendApp = async (req, res) => {
   let transporter, mailOptions;
   const data = req.body;
+  console.log(data);
   mailOptions = {
     to: process.env.MAIL_TO,
     from: 'Aplicativo Clube Condor',
