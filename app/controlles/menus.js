@@ -4,6 +4,10 @@ const menus = require('../models/menus');
 const getMenus = async (req, res) => {
   try {
     const items = await menus.find({});
+    if (!items) return res.status(401).send({ message: 'Error not load menus' });
+    items.forEach(el => {
+      el.image = `https://api.cndr.me/app/categoria/${el.codMercadologico}.svg`;
+    });
     res.status(200).send(items);
   }
   catch (e) { httpError(res, e); }

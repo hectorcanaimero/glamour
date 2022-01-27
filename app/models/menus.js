@@ -6,8 +6,10 @@ const MenuScheme = new mongoose.Schema({
   codMercadologico: { type: Number },
   dscMercadologico: { type: String },
   slug: { type: String },
-  setor: { type: Array, }
+  setor: { type: Array, },
+  image: { type: String }
 },
+
 { timestamps: true, versionKey: false });
 
 module.exports = db.model('menus', MenuScheme)
