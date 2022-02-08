@@ -25,8 +25,7 @@ const getSearch = async (req, res) => {
   request(options, (error, response, body) => {
     if (error) return res.status(400).send(error);
     body = JSON.parse(body);
-    if(body.errors[0].code) return res.status(401).send({message: body.errors[0].message});
-    return res.status(200).json(body);
+    return res.send(body);
   });
 };
 

@@ -6,9 +6,9 @@ sendApp = async (req, res) => {
   console.log(data.sac);
   mailOptions = {
     to: process.env.MAIL_TO,
-    from: 'Aplicativo Clube Condor',
+    from: '"Aplicativo Clube Condor" <aplicativo@condor.com.br>',
     cc: ['aplicativo@condor.com.br'],
-    subject: 'sac@condor.com.br',
+    subject: 'Aplicativo Clube Condor',
     html: dataMail(data.sac)
   };
   transporter = nodemailer.createTransport({
@@ -20,19 +20,16 @@ sendApp = async (req, res) => {
     tls: {
       minVersion: 'TLSv1',
       rejectUnauthorized: false,
-      ciphers: 'HIGH:MEDIUM:!aNULL:!eNULL:@STRENGTH:!DH:!kEDH'
+      // ciphers: 'HIGH:MEDIUM:!aNULL:!eNULL:@STRENGTH:!DH:!kEDH'
     }
   });
   transporter.sendMail(mailOptions)
   .then((info) => {
-    console.log(info);
     const message = {  status: true, message: process.env.MESSAGE_SUCCESS };
-    console.log(message);
     transporter.close();
     return res.status(201).json(message);
   })
   .catch((err) => {
-    console.log(err);
     const message = {  status: false, message: process.env.MESSAGE_ERROR };
     transporter.close();
     return res.status(403).json(message);
