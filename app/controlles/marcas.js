@@ -14,8 +14,8 @@ const getAll = async (req, res) => {
 
 const getFornecedor = async (req, res) => {
   try {
-    const { fornecedor } = req.params;
-    const data = await model.findOne({ fornecedor });
+    const { id } = req.params;
+    const data = await model.findOne({ fornecedor: id });
     if(!data) { return res.status(400).send({ message: 'Data is not Found' }); }
     return res.status(200).send({ data });
   } catch (e) {
