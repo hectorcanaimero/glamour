@@ -1,3 +1,8 @@
+
+const { dirname, join } = require('path');
+const appDir = dirname(require.main.filename);
+const finder = require('findit')(join(appDir, 'public', 'images', 'png'));
+
 const { httpError } = require('../helpers/handleError');
 const stores = require('../models/stores');
 const products = require('../models/products');
@@ -9,13 +14,26 @@ const countStoreLoja = async (loja) => {
   return count;
 };
 
+const search = (host) => {
+  const item = `${host}.png`;
+  console.log('19 ', item);
+  finder.on('file',  (item) => {
+    console.log('File: ' + item);
+  });
+};
+
+
 const getItemsStore = async (req, res) => {
   const { shop } = req.params;
   const  { page, per_page } = req.query;
   options.page = page || 1;
   options.limit = per_page || 20;
   try {
+    let data =[];
     const items = await stores.paginate({ 'codLoja': shop }, options);
+    items.docs.forEach(el => {
+      search(el.host);
+    });
     if (!items) res.status(403).send({ message: 'Data not Found' });
     res.status(200).send(items);
   } catch (e) {
