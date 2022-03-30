@@ -7,7 +7,7 @@ const getMaster = async (req, res) => {
   const options = { method: "GET", url: `${process.env.API}/dados/${collection}`, "rejectUnauthorized": false };
   request(options, (error, response, body) => {
     if (error) return res.status(400).send(error);
-    if (collection === 'listaLojaFavorita') return getLoja(res, body);
+    // if (collection === 'listaLojaFavorita') return getLoja(res, body);
     return res.status(200).send(body);
   });
 };
