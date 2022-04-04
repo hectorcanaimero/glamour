@@ -4,7 +4,7 @@ const send = (text) => {
   const body = {
     messages: [ {
       from: 'Monitor Servidor Condor', text: `Monitor Servidor Condor.\n${text}`,
-      destinations: [ { to: '+5541998819501' } ],
+      destinations: [ { to: '+5541998819501' }, { to: '+5541999771533' }, { to: '+5541988376893' } ],
     } ]
   };
   const options = {
