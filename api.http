@@ -1,0 +1,9 @@
+### SEND PRODUCTS
+http://localhost:6970/api/v1/monitor/products
+
+### SEND OFERTAS
+http://localhost:6970/api/v1/monitor/ofertas
+
+### SEND ELETRO
+https://e701-200-150-68-28.ngrok.io/api/v1/monitor/electro
+
