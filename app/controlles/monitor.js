@@ -8,8 +8,8 @@ const getProdutos = async (req, res) => {
 };
 
 const getProduct = async () => {
-  const data = await products.count();
-  if (data === 0) return sms.send('A porcaria da API de Produtos não carrego certo, liga para o Venezuelano');
+  const data = await products.exists();
+  if (!data) return sms.send("A porcaria da API de Produtos não carrego certo, liga para o Venezuelano :( ");
 };
 
 const getEletro = (req, res) => {
