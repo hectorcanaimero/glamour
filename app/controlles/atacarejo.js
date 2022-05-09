@@ -41,7 +41,6 @@ const getSearch = async (req, res) => {
 };
 
 const postPessoa = (req, res) => {
-  const { collection } = req.params;
   const options = {
     'method': 'POST',
     'rejectUnauthorized': false,

@@ -9,6 +9,7 @@ const cacheTime = 86400000 * 30;
 
 app.use(cors());
 app.use(express.json());
+app.use(require('express-status-monitor')());
 app.use('/api/v1', require('./app/routes'));
 app.use(express.static(join(__dirname, 'public'), { etag: false, maxAge: cacheTime }));
 
