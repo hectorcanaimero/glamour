@@ -24,8 +24,8 @@ const ShopScheme = new mongoose.Schema({
     {
       timestamps: true,
       versionKey: false
-    })
+    });
 
-ShopScheme.plugin(require('mongoose-paginate-v2'))
+ShopScheme.plugin(require('mongoose-paginate-v2'));
 
-module.exports = db.model('shops', ShopScheme)
+module.exports = db.model('shops', ShopScheme);
