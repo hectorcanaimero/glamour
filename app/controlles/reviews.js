@@ -8,7 +8,7 @@ getAll = async (req, res) => {
   options.page = page || 1;
   options.limit = per_page || 10;
   try {
-    const items = await stores.paginate({}, options);
+    const items = await model.paginate({}, options);
     if (items) return res.status(404).send({ message: 'Erro no carregamento do produto' });
     res.status(200).send(items);
   } catch (e) {
