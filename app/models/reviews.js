@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const autopopulate = require('mongoose-autopopulate');
+const paginate  =require('mongoose-paginate-v2');
 
 const { dbAdmin } = require('../../config/mongo');
 
@@ -9,13 +9,10 @@ const ReviewSchema = new mongoose.Schema(
     jpg: { type: String },
     status: { type: Number, default: 0 },
     obs: { type: String },
-    product: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'products',
-      autopopulate:{ select: '-mercadologico -lstMercadologicoWeb'  }
-    },
+    product: { type: Object }
   },
   { timestamps: true, versionKey: false }
 );
 
-ReviewSchema.plugin(require('mongoose-paginate-v2'));
+ReviewSchema.plugin(paginate);
 module.exports = dbAdmin.model('reviews', ReviewSchema);

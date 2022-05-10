@@ -9,7 +9,7 @@ getAll = async (req, res) => {
   options.limit = per_page || 10;
   try {
     const items = await model.paginate({}, options);
-    if (items) return res.status(404).send({ message: 'Erro no carregamento do produto' });
+    if (!items) return res.status(404).send({ message: 'Erro no carregamento do produto' });
     res.status(200).send(items);
   } catch (e) {
       httpError(res, e);
@@ -22,7 +22,6 @@ create = async (req, res) => {
     const exist = await model.findOne({ product: body.product });
     if (exist) return res.status(404).send({ message: 'O Produto já está no cadastro!' });
     const create = await model.create(body);
-    console.log(create)
     if (!create) return res.status(404).send({ message: 'O Produto não foi cadastrado!' });
     const item = await model.findById(create._id);
     return res.status(201).send(item);
@@ -33,7 +32,7 @@ remove = async(req, res) => {
   const { id } = req.params;
   try {
     const exist = await model.findById(id);
-    if (exist) return res.status(404).send({ message: 'O Produto não existe!' });
+    if (!exist) return res.status(404).send({ message: 'O Produto não existe!' });
     const remove = await model.deleteOne({ _id: id});
     if (!remove) return res.status(404).send({ message: 'O Produto não foi apagado!' });
     return res.status(200).send({ message: 'O Produto foi apagado!' });
