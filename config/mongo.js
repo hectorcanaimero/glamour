@@ -11,4 +11,10 @@ const dbAdmin = mongoose.createConnection(process.env.DB_URI_ADMIN, {
   useUnifiedTopology: true
 });
 
-module.exports = { dbAdmin, db };
+const dbInf = mongoose.createConnection(process.env.DB_URI_INFLUENCER, {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+module.exports = { dbAdmin, db, dbInf };
