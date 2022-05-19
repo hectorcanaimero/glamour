@@ -8,8 +8,8 @@ const PalestrasSchema = new mongoose.Schema(
     patrocinantes: { type: String },
     descricao: { type: String },
     palestrante: { type: String },
-    data: { type: String },
-    hora: { type: String },
+    start: { type: Object },
+    end: { type: Object },
     qtd: { type: Number },
     participantes: { type: Number },
     loja: { type: Object }
