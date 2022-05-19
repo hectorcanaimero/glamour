@@ -4,8 +4,8 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const controller = require('../controlles/palestras');
 
-router.get('/', auth.checkAuth, controller.getAll);
-router.get('/:id', auth.checkAuth, controller.getById);
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 
 
 

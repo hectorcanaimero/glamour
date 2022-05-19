@@ -13,9 +13,9 @@ router.post('/receitas', images.upload, controller.createReceita);
 router.get('/:cpf/receita', auth.checkAuth, controller.getByCpfReceita);
 router.get('/receitas/validate', auth.checkAuth, controller.validateCadastroReceitas);
 
-router.post('/palestras', auth.checkAuth, controller.createPalestra);
-router.get('/:cpf/palestra/:palestra', auth.checkAuth, controller.getByCpfPalestra);
-router.get('/palestras/:palestra/validate', auth.checkAuth, controller.validateCadastroPalestra);
+router.post('/palestras', controller.createPalestra);
+router.get('/:cpf/palestra/:palestra', controller.getByCpfPalestra);
+router.get('/palestras/:palestra/validate', controller.validateCadastroPalestra);
 
 
 module.exports = router;

@@ -10,6 +10,7 @@ const CustomersSchema = new mongoose.Schema(
     clube: { type: Object },
     description: { type: String },
     images: { type: String },
+    others: { type: Object },
     palestra: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'palestras',
