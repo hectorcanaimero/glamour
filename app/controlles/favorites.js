@@ -8,8 +8,6 @@ const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 const getFavorite = async (req, res) => {
   try {
     const { cpf, store } = req.params;
-    console.log(cpf);
-    console.log(store);
     // TODO: REDIS
     const cacheKey = `favorites_cpf_${cpf}_store_${store}`;
     const cachedData = await cache.get(cacheKey);
