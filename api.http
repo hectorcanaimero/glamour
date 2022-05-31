@@ -23,3 +23,9 @@ content-type: application/json
 {
   "search": "Leite"
 }
+
+### Favorites
+https://api.cndr.me/api/v1/favorites/38460453812/store/6
+
+### Favorites
+https://api.cndr.me/api/v1/favorites/70653456298/store/6
