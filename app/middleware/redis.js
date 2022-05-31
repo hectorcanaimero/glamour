@@ -3,7 +3,8 @@ const { promisify } = require('util');
 
 const config = {
   port: 6379,
-  host: "173.230.137.242",
+  host: "127.0.0.1",
+  // host: "173.230.137.242",
 };
 
 const client = redis.createClient(config);
