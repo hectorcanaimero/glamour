@@ -1,3 +1,4 @@
+const cache = require('../middleware/redis');
 const { httpError } = require('../helpers/handleError');
 const favorites = require('../models/favorites');
 const stores = require('../models/stores');
@@ -5,19 +6,26 @@ const stores = require('../models/stores');
 const options = { page: 1, limit: 10, collation: { locale:  'pt'} };
 
 const getFavorite = async (req, res) => {
-  const { cpf, store } = req.params;
   try {
+    const { cpf, store } = req.params;
+    // TODO: REDIS
+    const cacheKey = `favorites_cpf_${cpf}_store_${store}`;
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) return res.status(200).json(cachedData);
+    // TODO: MONGO
     const item = await favorites.findOne({ cpf });
     const products = await stores.find({ codLoja: Number(store), host: { $in: item.products } });
     const items = { cpf: item.cpf, products, createdAt: item.createdAt };
+    await cache.save(cacheKey, items, 60*60*24);
     res.status(200).send(items);
   } catch (e) { httpError(res, e); }
 };
 
 const addFavorite = async (req, res) => {
-  let items = [];
-  const { cpf, store, product } = req.body;
   try {
+    let items = [];
+    const { cpf, store, product } = req.body;
+    const cacheKey = `favorites_cpf_${cpf}_store_${store}`;
     if (!product && !cpf && !store) return res.status(400).send({ message: 'Faltam dados' });
     items.push(product);
     const item = await favorites.findOne({ cpf });
@@ -35,14 +43,16 @@ const addFavorite = async (req, res) => {
     const favorite = await favorites.findOne({ cpf });
     const products = await stores.find({ codLoja: store, host: { $in: favorite.products } });
     const results = { cpf, products };
+    await cache.save(cacheKey, results, 60*60*24);
     return res.status(201).send(results);
   } catch(e) { httpError(res, e); }
 };
 
 const delFavorite = async (req, res) => {
-  const { cpf } = req.params;
-  const { product, store } = req.body;
   try {
+    const { cpf } = req.params;
+    const { product, store } = req.body;
+    const cacheKey = `favorites_cpf_${cpf}_store_${store}`;
     if (!product && !cpf) return res.status(400).send({ message: 'Falta dados' });
     const item = await favorites.findOne({ cpf });
     if(!item) return res.status(204).send({ message: 'O CPF não tem produtos favoritos' });
@@ -53,6 +63,7 @@ const delFavorite = async (req, res) => {
     const favorite = await favorites.findOne({ cpf });
     const products = await stores.find({ codLoja: store, host: { $in: favorite.products } });
     const results = { cpf, products };
+    await cache.save(cacheKey, results, 60*60*24);
     return res.status(201).send(results);
   } catch(e) { httpError(res, e); }
 

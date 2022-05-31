@@ -1,5 +1,7 @@
 const { httpError } = require('../helpers/handleError');
 const products = require('../models/products');
+const { client } = require('../middleware/redis');
+
 
 const getItems = async (req, res) => {
     try {

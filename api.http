@@ -7,3 +7,19 @@ http://localhost:6970/api/v1/monitor/ofertas
 ### SEND ELETRO
 https://e701-200-150-68-28.ngrok.io/api/v1/monitor/electro
 
+### GET por loja
+http://localhost:6970/api/v1/stores/6
+
+### GET por Producto
+http://localhost:6970/api/v1/stores/6/host/
+
+### GET por EAN
+http://localhost:6970/api/v1/stores/18/ean/7896091640101
+
+### POST SEARCH
+http://localhost:6970/api/v1/stores/58/search HTTP/1.1
+content-type: application/json
+
+{
+  "search": "Leite"
+}

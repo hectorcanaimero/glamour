@@ -1,19 +1,19 @@
-const shops = require('../models/shops')
-const { httpError } = require('../helpers/handleError')
+const shops = require('../models/shops');
+const { httpError } = require('../helpers/handleError');
 
-const options = { page: 1, limit: 20, collation: { locale:  'pt'} }
+const options = { page: 1, limit: 20, collation: { locale:  'pt'} };
 
 const getItems = async (req, res) => {
-    const  { page, per_page } = req.query
-    options.page = page
-    options.limit = per_page
+    const  { page, per_page } = req.query;
+    options.page = page;
+    options.limit = per_page;
     try {
-        const items = await shops.paginate({}, options)
-        res.send({ data: items })
+        const items = await shops.paginate({}, options);
+        res.send({ data: items });
     } catch (e) {
-        httpError(res, e)
+        httpError(res, e);
     }
-}
+};
 
 const getItemsBySlugCidade = async (req, res) => {
     const slug = req.params.slug
