@@ -4,9 +4,9 @@ const { httpError } = require('../helpers/handleError');
 const sms = require('../helpers/sms');
 
 
-const options = { page: 1, limit: 20, collation: { locale:  'pt'} }
+const options = { page: 1, limit: 20, collation: { locale:  'pt'} };
 
-getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const items = await model.find();
     if (!items) return res.status(404).send({ message: 'Erro no carregamento' });
@@ -16,7 +16,7 @@ getAll = async (req, res) => {
   }
 };
 
-getById = async (req, res) => {
+const getById = async (req, res) => {
   const { id } = req.params;
   try {
     const item = await model.findById(id);
@@ -27,7 +27,7 @@ getById = async (req, res) => {
   }
 };
 
-getByPalestra = async (req, res) => {
+const getByPalestra = async (req, res) => {
   const { palestra } = req.params;
   try {
     const item = await model.find({ palestra });
@@ -38,7 +38,7 @@ getByPalestra = async (req, res) => {
   }
 };
 
-getAllPalestra = async (req, res) => {
+const getAllPalestra = async (req, res) => {
   const { palestra } = req.params;
   try {
     const item = await palestraModel.find({});
@@ -49,7 +49,7 @@ getAllPalestra = async (req, res) => {
   }
 };
 
-getPalestraId = async (req, res) => {
+const getPalestraId = async (req, res) => {
   const { id } = req.params;
   try {
     const item = await palestraModel.findById(id);
@@ -60,7 +60,7 @@ getPalestraId = async (req, res) => {
   }
 };
 
-getByReceita= async (req, res) => {
+const getByReceita= async (req, res) => {
   try {
     const item = await model.find({ palestra: null });
     if (!item) return res.status(404).send({ message: 'Erro no carregamento' });
@@ -70,7 +70,7 @@ getByReceita= async (req, res) => {
   }
 };
 
-getByCpfPalestra = async (req, res) => {
+const getByCpfPalestra = async (req, res) => {
   const { cpf, palestra } = req.params;
   try {
     const item = await model.findOne({cpf, palestra});
@@ -81,7 +81,7 @@ getByCpfPalestra = async (req, res) => {
   }
 };
 
-getByCpfReceita = async (req, res) => {
+const getByCpfReceita = async (req, res) => {
   const { cpf } = req.params;
   try {
     const item = await model.findOne({cpf, palestra: null});
@@ -93,11 +93,11 @@ getByCpfReceita = async (req, res) => {
 };
 
 
-createPalestra = async (req, res) => {
+const createPalestra = async (req, res) => {
   const body = req.body;
   try {
     const create = await model.create(body);
-    if (!create) return res.status(404).send({ message: 'O Produto não foi cadastrado!' });
+    if (!create) return res.status(404).send({ message: 'A Palestra não foi cadastrado!' });
     const item = await model.findById(create._id);
     sms.sendPublic(item.clube.celular, item.palestra.start.dateTime);
     return res.status(201).send(item);
@@ -105,7 +105,7 @@ createPalestra = async (req, res) => {
 };
 
 
-createReceita = async (req, res) => {
+const createReceita = async (req, res) => {
   console.log(req);
   const body = req.body;
   try {
@@ -117,7 +117,7 @@ createReceita = async (req, res) => {
 };
 
 
-validateCadastroPalestra = async (req, res) => {
+const validateCadastroPalestra = async (req, res) => {
   const { id } = req.params;
   try {
     const { quantidade } = await palestraModel.findById(id);
@@ -132,7 +132,7 @@ validateCadastroPalestra = async (req, res) => {
   }
 };
 
-validateCadastroReceitas = async (req, res) => {
+const validateCadastroReceitas = async (req, res) => {
   try {
     const qtd = await model.count({ palestra: null });
     if (50 >=qtd) return res.status(404).send({ status: false, message: 'A Campanha da receita acabou!' });

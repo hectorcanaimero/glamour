@@ -1,5 +1,4 @@
 const request = require('request');
-const format = require('date-format');
 
 const send = (text) => {
   const body = {
@@ -18,7 +17,7 @@ const send = (text) => {
     },
     'body': JSON.stringify(body)
   };
-  request(options, (err, rsp, body) => {
+  request(options, (err, res, body) => {
     console.log(body);
     console.log('ERR ', err);
     JSON.stringify(body);
@@ -44,9 +43,7 @@ const sendPublic = (phone, data) => {
     },
     'body': JSON.stringify(body)
   };
-  request(options, (err, rsp, body) => {
-    console.log(body);
-    console.log('ERR ', err);
+  request(options, (err, res, body) => {
     JSON.stringify(body);
   });
 };
