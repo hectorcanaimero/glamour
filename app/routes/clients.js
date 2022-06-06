@@ -6,8 +6,8 @@ const palestras = require('../controlles/palestras');
 const images = require('../middleware/images');
 //TODO: clients !
 
-router.get('/', auth.checkAuth, controller.getAll);
-router.get('/:id', auth.checkAuth, controller.getById);
+router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 
 router.post('/receitas', images.upload, controller.createReceita);
 router.get('/:cpf/receita', auth.checkAuth, controller.getByCpfReceita);

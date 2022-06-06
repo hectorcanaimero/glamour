@@ -1,6 +1,8 @@
 const model = require('../models/clients');
 const palestraModel = require('../models/palestras');
 const { httpError } = require('../helpers/handleError');
+const sms = require('../helpers/sms');
+
 
 const options = { page: 1, limit: 20, collation: { locale:  'pt'} }
 
@@ -97,6 +99,7 @@ createPalestra = async (req, res) => {
     const create = await model.create(body);
     if (!create) return res.status(404).send({ message: 'O Produto não foi cadastrado!' });
     const item = await model.findById(create._id);
+    sms.sendPublic(item.clube.celular, item.palestra.start.dateTime);
     return res.status(201).send(item);
   }  catch (e) { httpError(res, e); }
 };
