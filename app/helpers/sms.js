@@ -45,6 +45,8 @@ const sendPublic = (phone, data) => {
   };
   request(options, (err, res, body) => {
     console.log('BODY ', body);
+    console.log('ERR ', err);
+    console.log('RES ', res);
     JSON.stringify(body);
   });
 };
